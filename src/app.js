@@ -1,8 +1,8 @@
-''
-
 const bodyParser = require('body-parser')
 const express = require('express')
 const morgan = require('morgan')
+
+const { ErrorHandlerMiddleware } = require('./middleware')
 
 const { PathNotFoundError } = require('./util/errors.util')
 
@@ -31,5 +31,10 @@ app.get('/favicon.ico', (request, response) => response.status(204))
  * Middleware - catch 404 and forward to error handler.
  */
 app.use((req, res, next) => next(new PathNotFoundError('The specified resource path does not exist.')))
+
+/**
+ * Middleware for catching errors and forwarding to error handler.
+ */
+app.use(ErrorHandlerMiddleware)
 
 module.exports = app
